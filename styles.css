@@ -1,0 +1,1082 @@
+/* ==========================================================================
+   Game Designer Portfolio: glassmorphism, themeable via CSS variables
+   Dark theme is the default; `body.light-theme` swaps the palette.
+   Mobile-first: base styles suit small phones, media queries scale up.
+   ========================================================================== */
+
+/* ---------- Design tokens ---------- */
+:root {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --bg-gradient: linear-gradient(160deg, #0f172a 0%, #1e1b4b 38%, #2e1065 72%, #3b0764 100%);
+  --bg-fallback: #0f172a;
+  --glow-1: rgba(168, 85, 247, 0.32);
+  --glow-2: rgba(56, 189, 248, 0.26);
+  --glow-3: rgba(168, 85, 247, 0.2);
+  --glow-4: rgba(56, 189, 248, 0.12);
+  --pattern-ink: 0.06; /* logo-tile layer opacity (assets/tools-tile.svg) */
+
+  /* Text */
+  --text: #f8fafc;
+  --text-muted: rgba(248, 250, 252, 0.75);
+
+  /* Accents */
+  --accent: #a855f7;
+  --accent-2: #38bdf8;
+  --grad-a: #a855f7;
+  --grad-b: #38bdf8;
+
+  /* Surfaces (glassmorphism) */
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --header-bg: rgba(15, 23, 42, 0.65);
+  --card-shadow: 0 12px 32px rgba(2, 6, 23, 0.4);
+
+  /* Small components */
+  --tag-bg: rgba(168, 85, 247, 0.16);
+  --tag-border: rgba(168, 85, 247, 0.38);
+  --tag-text: #d8b4fe;
+  --scrollbar-thumb: rgba(168, 85, 247, 0.55);
+}
+
+body.light-theme {
+  color-scheme: light;
+
+  --bg-gradient: linear-gradient(160deg, #e2e8f0 0%, #ede9fe 48%, #f3e8ff 100%);
+  --bg-fallback: #e2e8f0;
+  --glow-1: rgba(168, 85, 247, 0.2);
+  --glow-2: rgba(56, 189, 248, 0.2);
+  --glow-3: rgba(124, 58, 237, 0.14);
+  --glow-4: rgba(2, 132, 199, 0.1);
+  --pattern-ink: 0.08; /* logo-tile layer opacity (assets/tools-tile.svg) */
+
+  --text: #0f172a;
+  --text-muted: rgba(15, 23, 42, 0.72);
+
+  --grad-a: #7c3aed;
+  --grad-b: #0284c7;
+
+  --card-bg: rgba(255, 255, 255, 0.7);
+  --card-border: rgba(15, 23, 42, 0.08);
+  --header-bg: rgba(241, 245, 249, 0.7);
+  --card-shadow: 0 12px 32px rgba(100, 116, 139, 0.22);
+
+  --tag-bg: rgba(168, 85, 247, 0.12);
+  --tag-border: rgba(168, 85, 247, 0.32);
+  --tag-text: #6b21a8;
+  --scrollbar-thumb: rgba(168, 85, 247, 0.45);
+}
+
+/* ---------- Reset & base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--bg-fallback);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Fixed full-viewport gradient that never scrolls away */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(56rem 36rem at 88% -12%, var(--glow-1), transparent 65%),
+    radial-gradient(60rem 40rem at -15% 112%, var(--glow-2), transparent 65%),
+    radial-gradient(46rem 30rem at 104% 106%, var(--glow-3), transparent 62%),
+    radial-gradient(40rem 26rem at -8% -6%, var(--glow-4), transparent 62%),
+    var(--bg-gradient);
+}
+
+/* Fixed full-viewport logo pattern, sitting on top of the glows and below
+   everything else. The tile's glyphs are baked as black ink on transparency:
+   dark theme inverts the layer to white ink; light theme keeps the black.
+   Strength is one dial per theme via --pattern-ink (0 = off). */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url("assets/tools-tile.svg") repeat;
+  background-size: 560px 672px;
+  background-position: center;
+  opacity: var(--pattern-ink);
+  filter: invert(1); /* flips the baked black glyphs to white ink on the dark gradient */
+  pointer-events: none;
+}
+
+body.light-theme::after {
+  filter: none; /* light theme keeps the glyphs' baked black ink */
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}
+
+svg.icon {
+  display: block;
+}
+
+::selection {
+  background: rgba(168, 85, 247, 0.4);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+/* ---------- Utilities ---------- */
+.container {
+  width: min(100% - 2.5rem, 1200px);
+  margin-inline: auto;
+}
+
+.glass {
+  background: var(--card-bg);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+/* Anchored sections shouldn't hide behind the floating nav */
+section {
+  scroll-margin-top: 5.75rem;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--card-border);
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background: var(--tag-bg);
+  border-color: var(--tag-border);
+}
+
+.btn.is-copied {
+  background: linear-gradient(90deg, #059669, #38bdf8);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+}
+
+/* ---------- Navigation ---------- */
+.site-header {
+  position: sticky;
+  top: 0.9rem;
+  z-index: 1000;
+  padding: 0 0.9rem;
+  pointer-events: none; /* only the pill itself is interactive */
+}
+
+.nav {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: min(100% - 1.5rem, 1168px);
+  margin-inline: auto;
+  padding: 0.45rem 0.6rem;
+  border-radius: 999px;
+  background: var(--header-bg);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+.brand {
+  margin-right: auto;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand span {
+  background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin-right: 0.35rem;
+}
+
+.nav-links a {
+  display: block;
+  padding: 0.4rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: var(--text);
+  background: var(--tag-bg);
+}
+
+.nav-links a.is-active {
+  color: var(--text);
+  background: var(--tag-bg);
+  box-shadow: inset 0 0 0 1px var(--tag-border);
+}
+
+/* Theme toggle (sun / moon) */
+.theme-toggle {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--tag-bg);
+  transform: rotate(12deg);
+}
+
+.theme-toggle .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+body.light-theme .theme-toggle .icon-sun {
+  display: block;
+}
+
+body.light-theme .theme-toggle .icon-moon {
+  display: none;
+}
+
+/* Hamburger trigger for the mobile drawer. Desktop keeps the inline nav. */
+.nav-toggle {
+  flex: none;
+  display: none; /* revealed in the small-screen query below */
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-toggle:hover {
+  background: var(--tag-bg);
+}
+
+/* ---------- Mobile drawer menu ---------- */
+/*
+   Small screens swap the inline links for a hamburger that slides a glass
+   panel in from the right: backdrop dim, the three section links, and the
+   theme toggle. `body.nav-open` drives every state so the JS stays tiny.
+*/
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 2000; /* above the sticky nav */
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s 0.3s; /* stays visible until the slide-out ends */
+}
+
+.drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.5);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-panel {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  width: min(19rem, calc(100vw - 1.8rem));
+  padding: 1.1rem 1.25rem 1.25rem;
+  border-radius: 1.5rem;
+  transform: translateX(calc(100% + 2rem));
+  transition: transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.drawer-title {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.drawer-close {
+  display: inline-grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.drawer-close:hover {
+  background: var(--tag-bg);
+}
+
+.drawer-links {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.drawer-links a {
+  display: block;
+  padding: 0.85rem 1.1rem;
+  border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.drawer-links a:hover {
+  color: var(--text);
+  background: var(--tag-bg);
+}
+
+.drawer-links a.is-active {
+  color: var(--text);
+  background: var(--tag-bg);
+  box-shadow: inset 0 0 0 1px var(--tag-border);
+}
+
+.drawer-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.25rem; /* sits right below the links, not pinned to the bottom */
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--card-border);
+}
+
+.drawer-foot-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Open state */
+body.nav-open .drawer {
+  visibility: visible;
+  pointer-events: auto;
+  transition: none;
+}
+
+body.nav-open .drawer-backdrop {
+  opacity: 1;
+}
+
+body.nav-open .drawer-panel {
+  transform: translateX(0);
+}
+
+/* Small phones: swap the inline nav for the hamburger + drawer */
+@media (max-width: 599px) {
+  .nav-links,
+  .site-header .theme-toggle {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-grid;
+  }
+
+  /* The open drawer locks the page scroll (the drawer never opens on desktop) */
+  body.nav-open {
+    overflow: hidden;
+  }
+}
+
+/* Desktop and up: the drawer doesn't exist */
+@media (min-width: 600px) {
+  .drawer {
+    display: none;
+  }
+}
+
+/* ---------- Hero / Bio ---------- */
+.hero {
+  position: relative; /* anchors the decorative .hero-side clusters */
+  padding: clamp(3rem, 9vh, 5rem) 0 clamp(2.5rem, 6vh, 4rem);
+  text-align: center;
+}
+
+.hero-inner {
+  max-width: 56rem;
+  margin-inline: auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1.25rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tag-text);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.hero h1 {
+  font-size: clamp(2.25rem, 6.5vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.grad {
+  background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-bio {
+  max-width: 62ch;
+  margin: 1.25rem auto 2rem;
+  font-size: clamp(1rem, 2.2vw, 1.15rem);
+  color: var(--text-muted);
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Gentle entrance */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-inner > * {
+  animation: rise 0.6s ease-out both;
+}
+
+.hero-inner > :nth-child(2) { animation-delay: 0.08s; }
+.hero-inner > :nth-child(3) { animation-delay: 0.16s; }
+.hero-inner > :nth-child(4) { animation-delay: 0.24s; }
+
+/* ---------- Hero: floating side cards (decorative, wide screens) ---------- */
+/*
+   Two ambient clusters fill the empty flanks beside the centered hero on
+   wide displays. They are pure decoration: aria-hidden, click-transparent,
+   token-styled (so dark and light themes swap automatically), and hidden
+   below 1400px, where the flanks get too narrow to hold them safely.
+*/
+.hero-side {
+  position: absolute;
+  top: 50%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  pointer-events: none;
+}
+
+.hero-side-left { transform: translateY(-54%); }
+.hero-side-right { transform: translateY(-46%); }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  50% { transform: translateY(-0.65rem) rotate(var(--tilt, 0deg)); }
+}
+
+.float-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  width: min(14rem, 100%);
+  padding: 1.1rem 1.2rem;
+  border-radius: 1.25rem;
+  text-align: left; /* hero text-aligns center; cards read better left */
+  animation: bob 7s ease-in-out infinite;
+  animation-delay: -1.5s;
+}
+
+.float-card-eyebrow {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tag-text);
+}
+
+.float-card-big {
+  font-size: 1.02rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.mini-stats {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.mini-stats li span {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.mini-stats li strong {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.quest-bar {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+}
+
+.quest-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
+}
+
+.float-card-note {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Tool chips reuse .tags styling; stagger their bob so they drift apart */
+.hero-side .chip-cloud {
+  width: min(14rem, 100%);
+  justify-content: center;
+}
+
+.hero-side .chip-cloud li {
+  animation: bob 6.5s ease-in-out infinite;
+}
+
+.hero-side .chip-cloud li:nth-child(2) { animation-delay: -1.1s; }
+.hero-side .chip-cloud li:nth-child(3) { animation-delay: -2.2s; }
+.hero-side .chip-cloud li:nth-child(4) { animation-delay: -0.6s; }
+.hero-side .chip-cloud li:nth-child(5) { animation-delay: -1.8s; }
+.hero-side .chip-cloud li:nth-child(6) { animation-delay: -2.9s; }
+.hero-side .chip-cloud li:nth-child(7) { animation-delay: -0.3s; }
+
+.hero-side-emoji {
+  font-size: clamp(2.75rem, 3.5vw, 3.75rem);
+  line-height: 1;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+  animation: bob 5.5s ease-in-out infinite;
+  animation-delay: -3.2s;
+}
+
+@media (min-width: 1400px) {
+  .hero-side {
+    display: flex;
+    width: min(14rem, calc((100vw - 56rem) / 2 - 4rem));
+  }
+
+  /* Center each cluster inside its flank: half the free space minus half a card */
+  .hero-side-left { left: max(1.25rem, calc((100vw - 56rem) / 4 - 7rem)); }
+  .hero-side-right { right: max(1.25rem, calc((100vw - 56rem) / 4 - 7rem)); }
+}
+
+/* ---------- Shared section styles ---------- */
+.section {
+  padding-block: clamp(2.5rem, 7vw, 4.5rem);
+}
+
+.section-head {
+  margin-bottom: 2rem;
+}
+
+.section-head h2 {
+  font-size: clamp(1.7rem, 4vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.section-head h2::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 0.2rem;
+  margin-top: 0.6rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+.section-head p {
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ---------- Projects: infinite looping hero carousel ---------- */
+/*
+   Every card is stacked in the same grid cell and pushed sideways by
+   --offset steps of --slide-gap; script.js assigns loop-aware offsets,
+   CSS animates the moves. Neighbours fade to 45% and the far cards stay
+   as faint slivers at the screen edges; a card that wraps around fades
+   out in place and fades in on the other side (it never travels across),
+   while a mask melts the row into the background toward both edges.
+*/
+.carousel {
+  --card-w: min(86vw, 58vh, 680px);
+  --slide-gap: calc(var(--card-w) * 0.85);
+  --slide-time: 0.55s;
+
+  display: grid;
+  padding: 1.25rem 0 2rem;
+  overflow: hidden; /* faded cards travel past the viewport edges */
+  outline: none;
+  touch-action: pan-y; /* vertical swipes still scroll the page */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+}
+
+/* Keyboard focus lands on the carousel: mark the focused card instead. */
+.carousel:focus-visible .project-card.is-active {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 4px;
+}
+
+.project-card {
+  grid-area: 1 / 1; /* stack every card in the same cell */
+  justify-self: center;
+  display: flex; /* artwork on top, description filling the rest */
+  flex-direction: column;
+  width: var(--card-w);
+  border-radius: 1.75rem;
+  overflow: hidden;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+  transform: translateX(calc(var(--offset, 0) * var(--slide-gap))) scale(var(--scale, 1));
+  opacity: var(--opacity, 1);
+  z-index: var(--z, 1);
+  will-change: transform, opacity;
+  transition:
+    transform var(--slide-time) cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity var(--slide-time) ease;
+}
+
+.project-card:hover {
+  /* Nudge faded neighbours toward visibility as an affordance */
+  opacity: min(1, calc(var(--opacity, 1) + 0.2));
+}
+
+.project-card.is-active {
+  cursor: default;
+}
+
+.project-card.is-ghost {
+  pointer-events: none; /* invisible cards must not catch clicks */
+}
+
+/* Wrapping cards slide out past the screen edge while fading out, and a
+   ghost double slides in from beyond the opposite edge (see script.js).
+   This class only kills transitions for the single frame while the real
+   card switches sides invisibly. */
+.project-card.is-teleporting {
+  transition: none !important;
+}
+
+/* Card artwork: gradient placeholder until a real <img> is dropped in */
+.project-art {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.project-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 28px);
+}
+
+.project-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-emoji {
+  font-size: clamp(3rem, 9vw, 4.5rem);
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.35));
+}
+
+/* Darkens the artwork behind the overlaid title */
+.project-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 48%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.project-title {
+  position: absolute;
+  right: 1.25rem;
+  left: 1.25rem;
+  bottom: 1rem;
+  text-align: center;
+  font-size: clamp(1.5rem, 4.5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+
+.thumb-1 { background: linear-gradient(135deg, #7c3aed, #38bdf8); }
+.thumb-2 { background: linear-gradient(135deg, #db2777, #a855f7); }
+.thumb-3 { background: linear-gradient(135deg, #0284c7, #1e1b4b); }
+.thumb-4 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+.thumb-5 { background: linear-gradient(135deg, #10b981, #0ea5e9); }
+
+/* Description + tags live inside the card, under the artwork */
+.project-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  flex: 1;
+  padding: 1.25rem;
+}
+
+.project-body h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.project-body > p {
+  flex: 1; /* pins the tags to the card bottom on shorter descriptions */
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tags li {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  color: var(--tag-text);
+}
+
+/* ---------- Contact ---------- */
+.contact-card {
+  max-width: 68rem;
+  margin-inline: auto;
+  padding: clamp(1.75rem, 5vw, 3rem);
+  border-radius: 1.5rem;
+  display: grid;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+  text-align: center;
+}
+
+.contact-card h2 {
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.contact-note {
+  max-width: 52ch;
+  margin: 1rem auto 0;
+  color: var(--text-muted);
+}
+
+.email-line {
+  margin: 0; /* vertical rhythm comes from the .contact-cta flex gap */
+}
+
+.email {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  background: var(--tag-bg);
+  border: 1px dashed var(--tag-border);
+  color: var(--text);
+  user-select: all; /* tap-to-select the address on touch devices */
+}
+
+/* Stacks the email pill above the action buttons with an even gap,
+   on every screen size (the desktop query below only re-aligns it) */
+.contact-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.contact-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+/* Wide screens: intro left, actions right — the card finally owns the page
+   width instead of floating in it. Must stay after .contact-note above. */
+@media (min-width: 900px) {
+  .contact-card {
+    grid-template-columns: 1.15fr 1fr;
+    text-align: left;
+    column-gap: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .contact-note {
+    max-width: 48ch;
+    margin: 1rem 0 0;
+  }
+
+  .contact-cta {
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding-left: clamp(1.5rem, 4vw, 3rem);
+    border-left: 1px solid var(--card-border);
+  }
+
+  .contact-actions {
+    justify-content: flex-start;
+  }
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  margin-top: clamp(2.5rem, 8vh, 4.5rem);
+  padding-block: 2.25rem;
+  border-top: 1px solid var(--card-border);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.social-link .icon {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.social-link:hover {
+  color: var(--tag-text);
+  background: var(--tag-bg);
+  border-color: var(--tag-border);
+}
+
+/* ---------- Responsive scale-up ---------- */
+@media (min-width: 600px) {
+  .nav-links {
+    gap: 0.25rem;
+  }
+
+  .nav-links a {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .nav {
+    padding: 0.5rem 1.1rem;
+  }
+
+  .brand {
+    font-size: 1.05rem;
+  }
+
+  .nav-links a {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+  }
+}

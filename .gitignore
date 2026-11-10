@@ -1,0 +1,14 @@
+# Personal documents (CV, notes) — keep out of the public repo
+docs/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+
+# Misc
+*.log
