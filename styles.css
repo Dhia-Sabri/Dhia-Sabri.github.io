@@ -339,6 +339,42 @@ body.light-theme .theme-toggle .icon-moon {
   display: none;
 }
 
+/* Language toggle (EN / FR), styled like the nav pills */
+.lang-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.2rem;
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+}
+
+.lang-btn {
+  padding: 0.3rem 0.55rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.lang-btn:hover {
+  color: var(--text);
+  background: var(--tag-bg);
+}
+
+.lang-btn.is-active {
+  color: var(--text);
+  background: var(--tag-bg);
+  box-shadow: inset 0 0 0 1px var(--tag-border);
+}
+
 /* Hamburger trigger for the mobile drawer. Desktop keeps the inline nav. */
 .nav-toggle {
   flex: none;
@@ -490,7 +526,8 @@ body.nav-open .drawer-panel {
 /* Small phones: swap the inline nav for the hamburger + drawer */
 @media (max-width: 599px) {
   .nav-links,
-  .site-header .theme-toggle {
+  .site-header .theme-toggle,
+  .site-header .lang-toggle {
     display: none;
   }
 
@@ -970,7 +1007,7 @@ body.nav-open .drawer-panel {
   gap: 0.9rem;
 }
 
-/* Wide screens: intro left, actions right — the card finally owns the page
+/* Wide screens: intro left, actions right, so the card finally owns the page
    width instead of floating in it. Must stay after .contact-note above. */
 @media (min-width: 900px) {
   .contact-card {

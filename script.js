@@ -15,6 +15,10 @@
   const THEME_KEY = "preferred-theme";
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // translations.js loads first and exposes the translation lookup; the
+  // fallback keeps script.js working even if translations.js fails to load.
+  const t = (key) => (window.PortfolioI18N ? window.PortfolioI18N.t(key) : key);
+
   /* ---------- 1. Theme switching ---------- */
   // Both the nav bar and the mobile drawer have a toggle.
   const themeToggles = Array.from(document.querySelectorAll(".theme-toggle"));
@@ -41,7 +45,7 @@
     body.classList.toggle("light-theme", isLight);
     themeToggles.forEach((toggle) => {
       toggle.setAttribute("aria-pressed", String(isLight));
-      toggle.setAttribute("aria-label", isLight ? "Switch to dark theme" : "Switch to light theme");
+      toggle.setAttribute("aria-label", isLight ? t("theme.aria.dark") : t("theme.aria.light"));
     });
     if (themeColorMeta) {
       themeColorMeta.setAttribute("content", isLight ? "#e2e8f0" : "#1e1b4b");
@@ -75,9 +79,11 @@
         block: "start",
       });
 
-      // Keep the URL shareable without triggering a native jump.
+      // Keep the URL shareable without triggering a native jump, while
+      // preserving the ?lang= parameter set by translations.js.
       try {
-        history.replaceState(null, "", hash);
+        const url = new URL(window.location.href);
+        history.replaceState(null, "", url.search + hash);
       } catch {
         /* non-fatal */
       }
@@ -134,7 +140,6 @@
   const copyLabel = document.getElementById("copy-label");
 
   if (copyButton && emailText && copyLabel) {
-    const originalLabel = copyLabel.textContent;
     let resetTimer = null;
 
     const flashLabel = (message) => {
@@ -142,7 +147,7 @@
       copyButton.classList.add("is-copied");
       window.clearTimeout(resetTimer);
       resetTimer = window.setTimeout(() => {
-        copyLabel.textContent = originalLabel;
+        copyLabel.textContent = t("contact.copyEmail");
         copyButton.classList.remove("is-copied");
       }, 2000);
     };
@@ -171,17 +176,27 @@
 
       try {
         await navigator.clipboard.writeText(email);
-        flashLabel("Copied!");
+        flashLabel(t("contact.copied"));
       } catch {
         // Clipboard API can be blocked (e.g. insecure context), so fall back.
         if (copyViaExecCommand(email)) {
-          flashLabel("Copied!");
+          flashLabel(t("contact.copied"));
         } else {
-          flashLabel("Select & copy above");
+          flashLabel(t("contact.selectCopy"));
         }
       }
     });
   }
+
+  /* ---------- Language changes: keep dynamic strings in sync ---------- */
+  // translations.js re-translates the static markup; these are the labels
+  // script.js owns (theme aria-labels + the copy button's resting label).
+  document.addEventListener("portfolio:languagechange", () => {
+    applyTheme(currentTheme);
+    if (copyButton && copyLabel && !copyButton.classList.contains("is-copied")) {
+      copyLabel.textContent = t("contact.copyEmail");
+    }
+  });
 
   /* ---------- 5. Projects carousel: infinite looping hero slider ---------- */
   const carousel = document.querySelector(".carousel");

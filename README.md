@@ -1,7 +1,7 @@
-# Portfolio Website — Dhia Sabri
+# Portfolio Website, Dhia Sabri
 
 Personal portfolio for **Dhia Sabri**, game designer & developer. Built with vanilla
-HTML, CSS, and JavaScript — no frameworks, no build step.
+HTML, CSS, and JavaScript, with no frameworks and no build step.
 
 **Live site:** https://dhia-sabri.github.io
 

@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Portfolio of Dhia Sabri, a game designer and developer working across Unreal Engine and Unity, with a focus on mechanical and level design, 3D art, and interactive simulations." />
-  <title>Dhia Sabri | Game Designer & Developer</title>
+  <meta name="description" content="Portfolio of Dhia Sabri, a game designer and developer working across Unreal Engine and Unity, with a focus on mechanical and level design, 3D art, and interactive simulations." data-i18n-content="meta.description" />
+  <title data-i18n="meta.title">Dhia Sabri | Game Designer & Developer</title>
   <meta name="theme-color" content="#1e1b4b" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%AE%3C/text%3E%3C/svg%3E" />
   <link rel="stylesheet" href="styles.css" />
+  <script defer src="translations.js"></script>
   <script defer src="script.js"></script>
   <noscript>
     <!-- Without JS the hamburger can't open, so keep the inline nav usable. -->
@@ -23,16 +24,22 @@
 
   <!-- ===== Navigation ===== -->
   <header class="site-header">
-    <nav class="nav" aria-label="Primary navigation">
+    <nav class="nav" aria-label="Primary navigation" data-i18n-aria="nav.aria">
       <a class="brand" href="#about">Dhia<span> Sabri</span></a>
 
       <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+        <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
       </ul>
 
-      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme" title="Toggle light / dark theme">
+      <!-- EN / FR language toggle (mirrored inside the mobile drawer) -->
+      <div class="lang-toggle" role="group" data-i18n-aria="lang.aria">
+        <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button class="lang-btn" type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
+
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme" title="Toggle light / dark theme" data-i18n-title="theme.title">
         <svg class="icon icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
@@ -49,7 +56,7 @@
         </svg>
       </button>
 
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer-menu" aria-label="Open menu">
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer-menu" aria-label="Open menu" data-i18n-aria="menu.open">
         <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <line x1="4" y1="7" x2="20" y2="7" />
           <line x1="4" y1="12" x2="20" y2="12" />
@@ -62,17 +69,17 @@
   <!-- ===== Mobile drawer: slide-in menu for small screens ===== -->
   <div class="drawer" id="drawer-menu">
     <div class="drawer-backdrop" data-drawer-close></div>
-    <aside class="drawer-panel glass" role="dialog" aria-modal="true" aria-label="Menu">
+    <aside class="drawer-panel glass" role="dialog" aria-modal="true" aria-label="Menu" data-i18n-aria="menu.aria">
       <div class="drawer-head">
-        <span class="drawer-title">Menu</span>
-        <button class="drawer-close" type="button" data-drawer-close aria-label="Close menu">
+        <span class="drawer-title" data-i18n="menu.title">Menu</span>
+        <button class="drawer-close" type="button" data-drawer-close aria-label="Close menu" data-i18n-aria="menu.close">
           <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
       </div>
-      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme" title="Toggle light / dark theme">
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light theme" title="Toggle light / dark theme" data-i18n-title="theme.title">
         <svg class="icon icon-moon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
@@ -91,12 +98,15 @@
       <div style="margin-top: 1rem;"></div>
 
       <ul class="drawer-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+        <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+        <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
       </ul>
       <div class="drawer-foot">
-        
+        <div class="lang-toggle" role="group" data-i18n-aria="lang.aria">
+          <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button class="lang-btn" type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
       </div>
     </aside>
   </div>
@@ -108,12 +118,12 @@
       <!-- Decorative floating side cards: purely visual, hidden below 1400px -->
       <div class="hero-side hero-side-left" aria-hidden="true">
         <div class="glass float-card" style="--tilt: -2deg">
-          <p class="float-card-eyebrow">Player one</p>
-          <p class="float-card-big">The Game of Life</p>
+          <p class="float-card-eyebrow" data-i18n="hero.card1.eyebrow">Player one</p>
+          <p class="float-card-big" data-i18n="hero.card1.title">The Game of Life</p>
           <ul class="mini-stats">
-            <li><span>Class</span><strong>Game Designer &amp; Dev</strong></li>
-            <li><span>Loadout</span><strong>Code and 3D</strong></li>
-            <li><span>Perks</span><strong>Jack Of All Trades</strong></li>
+            <li><span data-i18n="hero.card1.class">Class</span><strong data-i18n="hero.card1.classValue">Game Designer &amp; Dev</strong></li>
+            <li><span data-i18n="hero.card1.loadout">Loadout</span><strong data-i18n="hero.card1.loadoutValue">Code and 3D</strong></li>
+            <li><span data-i18n="hero.card1.perks">Perks</span><strong data-i18n="hero.card1.perksValue">Jack Of All Trades</strong></li>
           </ul>
         </div>
         <ul class="tags chip-cloud">
@@ -129,18 +139,18 @@
 
       <div class="hero-side hero-side-right" aria-hidden="true">
         <div class="glass float-card" style="--tilt: 2.5deg">
-          <p class="float-card-eyebrow">Current quest</p>
-          <p class="float-card-big">How can you make it better?</p>
+          <p class="float-card-eyebrow" data-i18n="hero.card2.eyebrow">Current quest</p>
+          <p class="float-card-big" data-i18n="hero.card2.title">How can you make it better?</p>
           <div class="quest-bar"><span style="width: 82%"></span></div>
-          <p class="float-card-note">I'm always open to research how...</p>
+          <p class="float-card-note" data-i18n="hero.card2.note">I'm always open to research how...</p>
         </div>
         <span class="hero-side-emoji">🕹️</span>
       </div>
 
       <div class="container hero-inner">
-        <p class="hero-badge">🎮 Game Designer & Developer</p>
-        <h1>Hi, I'm <span class="grad">Dhia Sabri</span>.<br />I make games.</h1>
-        <p class="hero-bio">
+        <p class="hero-badge" data-i18n="hero.badge">🎮 Game Designer & Developer</p>
+        <h1 data-i18n-html="hero.title">Hi, I'm <span class="grad">Dhia Sabri</span>.<br />I make games.</h1>
+        <p class="hero-bio" data-i18n="hero.bio">
           Game Designer and Developer specializing in C# and C++ across Unity
           and Unreal Engine backed by 3D skills like modeling, texturing, and
           animation in Blender and Cascadeur. Experienced in building interactive
@@ -150,7 +160,7 @@
           visions to life for freelance, part-time, and full-time roles. 
         </p>
         <div class="hero-actions">
-          <a class="btn" href="#projects">View My Projects</a>
+          <a class="btn" href="#projects" data-i18n="hero.cta">View My Projects</a>
         </div>
       </div>
     </section>
@@ -159,23 +169,23 @@
     <section id="projects" class="section">
       <div class="container">
         <header class="section-head">
-          <h2>Projects</h2>
+          <h2 data-i18n="projects.title">Projects</h2>
         </header>
 
       </div>
 
-      <ul class="carousel" aria-label="Project showcase" aria-roledescription="carousel" tabindex="0">
+      <ul class="carousel" aria-label="Project showcase" aria-roledescription="carousel" tabindex="0" data-i18n-aria="projects.carouselAria" data-i18n-role="projects.carouselRole">
         <li class="project-card">
           <div class="project-art thumb-1">
             <!-- Artwork slot: add <img class="project-image" src="…" alt="…"> as the first child of .project-art -->
-             <img class="project-image" src="assets/TwinLight.jpg" alt="TwinLight screenshot" />
+             <img class="project-image" src="assets/TwinLight.jpg" alt="TwinLight screenshot" data-i18n-alt="project1.imgAlt" />
             <div class="project-scrim" aria-hidden="true"></div>
             <!--span class="project-emoji" aria-hidden="true">🌓</span-->
             <span class="project-title">TwinLight</span>
           </div>
           <div class="project-body">
-            <h3>TwinLight, Third-Person RPG Demo</h3>
-            <p>
+            <h3 data-i18n="project1.title">TwinLight, Third-Person RPG Demo</h3>
+            <p data-i18n="project1.desc">
               A vertical-slice action RPG with parkour, combat, and cinematic cutscenes, built as a
               two-person bachelor capstone project (PFE) at Lanterns Studio and ISAMM. I designed the level layouts, modeled
               every building in Blender, programmed behavior trees for the enemy NPCs and the final
@@ -193,14 +203,14 @@
         <li class="project-card">
           <div class="project-art thumb-2">
             <!-- Artwork slot: add <img class="project-image" src="…" alt="…"> as the first child of .project-art -->
-            <img class="project-image" src="assets/BoardGame.jpg" alt="Board Game screenshot" />
+            <img class="project-image" src="assets/BoardGame.jpg" alt="Board Game screenshot" data-i18n-alt="project2.imgAlt" />
             <div class="project-scrim" aria-hidden="true"></div>
             <!--span class="project-emoji" aria-hidden="true">🎲</span-->
             <span class="project-title">Crash Landing</span>
           </div>
           <div class="project-body">
-            <h3>Board Game, Master's Semester Project</h3>
-            <p>
+            <h3 data-i18n="project2.title">Board Game, Master's Semester Project</h3>
+            <p data-i18n="project2.desc">
               A tabletop project built with a team of five in my first Master's semester. I
               co-designed the core mechanics, rules, and thematic development, and created the 3D
               models that became the printed game tokens for the final prototype.
@@ -217,14 +227,14 @@
 
         <li class="project-card">
           <div class="project-art thumb-3">
-            <img class="project-image" src="assets/Hemocrypt.jpg" alt="Hemocrypt screenshot" />
+            <img class="project-image" src="assets/Hemocrypt.jpg" alt="Hemocrypt screenshot" data-i18n-alt="project3.imgAlt" />
             <div class="project-scrim" aria-hidden="true"></div>
             <!--span class="project-emoji" aria-hidden="true">🩸</span-->
             <span class="project-title">Hemocrypt</span>
           </div>
           <div class="project-body">
-            <h3>Hemocrypt, Dungeon Bullet Hell</h3>
-            <p>
+            <h3 data-i18n="project3.title">Hemocrypt, Dungeon Bullet Hell</h3>
+            <p data-i18n="project3.desc">
               A four-person dungeon crawler where I picked up Godot mid-project and put it straight
               to work. I helped shape the core gameplay mechanics and rulesets, then produced the
               3D assets end to end, from character models to environment design.
@@ -240,14 +250,14 @@
 
         <li class="project-card">
           <div class="project-art thumb-4">
-            <img class="project-image" src="assets/IntoTheCasualVerse.jpg" alt="Game Jam screenshot" />
+            <img class="project-image" src="assets/IntoTheCasualVerse.jpg" alt="Game Jam screenshot" data-i18n-alt="project4.imgAlt" />
             <div class="project-scrim" aria-hidden="true"></div>
             <!--span class="project-emoji" aria-hidden="true">📼</span-->
             <span class="project-title">Into The Casual Verse</span>
           </div>
           <div class="project-body">
-            <h3>Consumerism-Satire Game Jam</h3>
-            <p>
+            <h3 data-i18n="project4.title">Consumerism-Satire Game Jam</h3>
+            <p data-i18n="project4.desc">
               A satirical, deliberately unclosable game about consumerism, made with a team of four.
               I co-designed the core gimmick, a gauntlet of hyper-casual games that transitions
               every time you fail, wrote VHS/VCR shaders in Godot for the retro sequences, built
@@ -263,14 +273,14 @@
 
         <li class="project-card">
           <div class="project-art thumb-5">
-            <img class="project-image" src="assets/EscapeTheDungeon.jpg" alt="Escape the Dungeon screenshot" />
+            <img class="project-image" src="assets/EscapeTheDungeon.jpg" alt="Escape the Dungeon screenshot" data-i18n-alt="project5.imgAlt" />
             <div class="project-scrim" aria-hidden="true"></div>
             <!--span class="project-emoji" aria-hidden="true">🧭</span-->
             <span class="project-title">Escape The Dungeon</span>
           </div>
           <div class="project-body">
-            <h3>World Generation, Master's Thesis</h3>
-            <p>
+            <h3 data-i18n="project5.title">World Generation, Master's Thesis</h3>
+            <p data-i18n="project5.desc">
               My thesis at Bahçeşehir University: an analytical prototype that switches level design
               between handcrafted and procedural generation inside a stylized 3D dungeon crawler.
               I built the game and custom camera occlusion in Unreal Engine 5, logged every playtest
@@ -294,8 +304,8 @@
       <div class="container">
         <div class="glass contact-card">
           <div class="contact-intro">
-            <h2>Let's make something players remember.</h2>
-            <p class="contact-note">
+            <h2 data-i18n="contact.title">Let's make something players remember.</h2>
+            <p class="contact-note" data-i18n="contact.note">
               I'm always up for collaborating on new concepts, game jams, or trading detailed
               playtesting feedback, and I'm open to freelance, part-time, and full-time opportunities.
               Whether you need systems tuned, levels paced, or 3D assets hand-built to fit a vision,
@@ -305,22 +315,22 @@
 
           <div class="contact-cta">
             <p class="email-line">
-              <span class="email" id="email-text" title="Email address">didyou.sabri@gmail.com</span>
+              <span class="email" id="email-text" title="Email address" data-i18n-title="contact.emailTitle">didyou.sabri@gmail.com</span>
             </p>
             <div class="contact-actions">
-              <button class="btn" id="copy-email" type="button" title="Copy email address to clipboard">
+              <button class="btn" id="copy-email" type="button" title="Copy email address to clipboard" data-i18n-title="contact.copyTitle">
                 <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                 </svg>
-                <span class="copy-label" id="copy-label" aria-live="polite">Copy Email</span>
+                <span class="copy-label" id="copy-label" aria-live="polite" data-i18n="contact.copyEmail">Copy Email</span>
               </button>
-              <a class="btn btn-ghost" href="mailto:didyou.sabri@gmail.com" title="Open your email client">
+              <a class="btn btn-ghost" href="mailto:didyou.sabri@gmail.com" title="Open your email client" data-i18n-title="contact.sendTitle">
                 <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
-                Send Email
+                <span data-i18n="contact.send">Send Email</span>
               </a>
             </div>
           </div>
@@ -333,7 +343,7 @@
   <!-- ===== Footer: LinkedIn + Discord links ===== -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <a class="social-link" href="https://www.linkedin.com/in/dhia-sabri-27b71433a" target="_blank" rel="noopener noreferrer" aria-label="Dhia Sabri on LinkedIn (opens in a new tab)">
+      <a class="social-link" href="https://www.linkedin.com/in/dhia-sabri-27b71433a" target="_blank" rel="noopener noreferrer" aria-label="Dhia Sabri on LinkedIn (opens in a new tab)" data-i18n-aria="footer.linkedinAria">
         <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
           <rect x="2" y="9" width="4" height="12" />
@@ -341,7 +351,7 @@
         </svg>
         LinkedIn
       </a>
-      <a class="social-link" href="https://discord.com/users/336997700694179840" target="_blank" rel="noopener noreferrer" aria-label="Dhia Sabri's Discord server (opens in a new tab)">
+      <a class="social-link" href="https://discord.com/users/336997700694179840" target="_blank" rel="noopener noreferrer" aria-label="Dhia Sabri's Discord server (opens in a new tab)" data-i18n-aria="footer.discordAria">
         <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
           <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z" />
         </svg>
